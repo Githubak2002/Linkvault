@@ -40,13 +40,15 @@ function getFaviconGradient(initial: string): string {
 
 interface BookmarkCardProps {
   bookmark: Bookmark
-  onDelete: (id: string) => void | Promise<void>
+  onDelete: (bookmark: Bookmark) => void
+  onEdit: (bookmark: Bookmark) => void
   animationDelay?: number
 }
 
 export default function BookmarkCard({
   bookmark,
   onDelete,
+  onEdit,
   animationDelay = 0,
 }: BookmarkCardProps) {
   const [isDeleting, setIsDeleting] = useState(false)
@@ -57,12 +59,20 @@ export default function BookmarkCard({
   const gradient = getFaviconGradient(initial)
 
   const handleDelete = useCallback(() => {
+    onDelete(bookmark)
+  }, [onDelete, bookmark])
+
+  const handleEdit = useCallback(() => {
+    onEdit(bookmark)
+  }, [onEdit, bookmark])
+
+  // Called after confirm dialog completes
+  const triggerExitAnimation = useCallback(() => {
     setIsDeleting(true)
-    // Let exit animation play, then remove from state
-    setTimeout(() => {
-      onDelete(bookmark.id)
-    }, 240)
-  }, [onDelete, bookmark.id])
+  }, [])
+
+  // Expose triggerExitAnimation via data attribute (used by parent)
+  void triggerExitAnimation
 
   return (
     <article
@@ -134,7 +144,7 @@ export default function BookmarkCard({
               gap: '0.3rem',
               fontFamily: 'var(--font-display)',
               fontSize: '0.75rem',
-              color: 'var(--color-text-teal)',
+              color: 'var(--color-text-accent)',
               textDecoration: 'none',
               marginBottom: '0.5rem',
               maxWidth: '100%',
@@ -144,26 +154,10 @@ export default function BookmarkCard({
               transition: 'color 150ms ease',
               cursor: 'pointer',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--color-primary-light)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--color-text-teal)'
-            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-primary-light)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-accent)' }}
           >
-            {/* External link icon */}
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-              style={{ flexShrink: 0 }}
-            >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
               <polyline points="15 3 21 3 21 9" />
               <line x1="10" y1="14" x2="21" y2="3" />
@@ -188,38 +182,46 @@ export default function BookmarkCard({
           </p>
         </div>
 
-        {/* Delete button — reveals on hover */}
-        <button
-          id={`delete-bookmark-${bookmark.id}`}
-          onClick={handleDelete}
-          disabled={isDeleting}
-          aria-label={`Delete ${bookmark.name}`}
-          className="btn-icon"
+        {/* Action buttons — reveal on hover (or always visible on touch) */}
+        <div
+          className="flex items-center gap-1"
           style={{
             flexShrink: 0,
             opacity: isHovered ? 1 : 0,
             transform: isHovered ? 'scale(1)' : 'scale(0.8)',
-            transition: 'opacity 150ms ease, transform 150ms ease, background-color 100ms ease, color 100ms ease',
+            transition: 'opacity 150ms ease, transform 150ms ease',
             pointerEvents: isHovered ? 'auto' : 'none',
           }}
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+          {/* Edit */}
+          <button
+            id={`edit-bookmark-${bookmark.id}`}
+            onClick={handleEdit}
+            aria-label={`Edit ${bookmark.name}`}
+            className="btn-icon"
+            style={{ color: 'var(--color-text-muted)' }}
           >
-            <polyline points="3 6 5 6 21 6" />
-            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-            <path d="M10 11v6M14 11v6" />
-            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-          </svg>
-        </button>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 3a2.85 2.85 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z" />
+            </svg>
+          </button>
+
+          {/* Delete */}
+          <button
+            id={`delete-bookmark-${bookmark.id}`}
+            onClick={handleDelete}
+            disabled={isDeleting}
+            aria-label={`Delete ${bookmark.name}`}
+            className="btn-icon"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+              <path d="M10 11v6M14 11v6" />
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+            </svg>
+          </button>
+        </div>
       </div>
     </article>
   )

@@ -34,7 +34,7 @@ function EmptyState({ variant, query, onAddClick, onClearSearch }: EmptyStatePro
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 40px rgba(13,148,136,0.1)',
+              boxShadow: '0 0 40px var(--color-primary-glow)',
             }}
           >
             <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -96,108 +96,122 @@ interface GroupSectionProps {
   groupName: string
   bookmarks: Bookmark[]
   baseDelay: number
-  onDelete: (id: string) => void | Promise<void>
+  onDelete: (bookmark: Bookmark) => void
+  onEdit: (bookmark: Bookmark) => void
+  onDeleteGroup: (groupName: string, count: number) => void
   defaultOpen?: boolean
 }
 
-function GroupSection({ groupName, bookmarks, baseDelay, onDelete, defaultOpen = true }: GroupSectionProps) {
+function GroupSection({ groupName, bookmarks, baseDelay, onDelete, onEdit, onDeleteGroup, defaultOpen = true }: GroupSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
+  const [isGroupHovered, setIsGroupHovered] = useState(false)
   const label = groupName || 'Ungrouped'
   const isUngrouped = !groupName
 
   return (
     <div style={{ marginBottom: '0.5rem' }}>
       {/* Group header */}
-      <button
-        id={`group-toggle-${label.replace(/\s+/g, '-').toLowerCase()}`}
-        onClick={() => setIsOpen((v) => !v)}
-        aria-expanded={isOpen}
-        aria-controls={`group-content-${label}`}
+      <div
         style={{
-          width: '100%',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.5rem 0.25rem',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
+          gap: '0.25rem',
           marginBottom: isOpen ? '0.5rem' : '0.25rem',
-          textAlign: 'left',
         }}
+        onMouseEnter={() => setIsGroupHovered(true)}
+        onMouseLeave={() => setIsGroupHovered(false)}
       >
-        {/* Chevron */}
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--color-text-muted)"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
+        <button
+          id={`group-toggle-${label.replace(/\s+/g, '-').toLowerCase()}`}
+          onClick={() => setIsOpen((v) => !v)}
+          aria-expanded={isOpen}
+          aria-controls={`group-content-${label}`}
           style={{
-            transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-            transition: 'transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1)',
-            flexShrink: 0,
-          }}
-        >
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-
-        {/* Folder icon */}
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke={isUngrouped ? 'var(--color-text-muted)' : 'var(--color-primary)'}
-          strokeWidth="2"
-          strokeLinecap="round"
-          aria-hidden="true"
-          style={{ flexShrink: 0 }}
-        >
-          {isUngrouped ? (
-            /* Dashed folder for ungrouped */
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" strokeDasharray="4 2" />
-          ) : (
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-          )}
-        </svg>
-
-        {/* Group name */}
-        <span
-          className="font-display"
-          style={{
-            fontSize: '0.8125rem',
-            fontWeight: 600,
-            letterSpacing: '0.04em',
-            textTransform: 'uppercase',
-            color: isUngrouped ? 'var(--color-text-muted)' : 'var(--color-text-secondary)',
             flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.5rem 0.25rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            textAlign: 'left',
           }}
         >
-          {label}
-        </span>
+          {/* Chevron */}
+          <svg
+            width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="var(--color-text-muted)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            style={{ transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 200ms var(--ease-out)', flexShrink: 0 }}
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
 
-        {/* Count badge */}
-        <span
-          style={{
-            fontSize: '0.6875rem',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            padding: '0.125rem 0.5rem',
-            borderRadius: '99px',
-            backgroundColor: isUngrouped ? 'var(--color-surface-2)' : 'rgba(13,148,136,0.12)',
-            color: isUngrouped ? 'var(--color-text-muted)' : 'var(--color-primary)',
-            border: `1px solid ${isUngrouped ? 'var(--color-border)' : 'rgba(13,148,136,0.2)'}`,
-            flexShrink: 0,
-          }}
-        >
-          {bookmarks.length}
-        </span>
-      </button>
+          {/* Folder icon */}
+          <svg
+            width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke={isUngrouped ? 'var(--color-text-muted)' : 'var(--color-primary)'}
+            strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}
+          >
+            {isUngrouped ? (
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" strokeDasharray="4 2" />
+            ) : (
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            )}
+          </svg>
+
+          {/* Group name */}
+          <span
+            className="font-display"
+            style={{
+              fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              color: isUngrouped ? 'var(--color-text-muted)' : 'var(--color-text-secondary)',
+              flex: 1,
+            }}
+          >
+            {label}
+          </span>
+
+          {/* Count badge */}
+          <span
+            style={{
+              fontSize: '0.6875rem', fontFamily: 'var(--font-display)', fontWeight: 600,
+              padding: '0.125rem 0.5rem', borderRadius: '99px',
+              backgroundColor: isUngrouped ? 'var(--color-surface-2)' : 'var(--color-primary-glow)',
+              color: isUngrouped ? 'var(--color-text-muted)' : 'var(--color-primary)',
+              border: `1px solid ${isUngrouped ? 'var(--color-border)' : 'rgba(99,102,241,0.2)'}`,
+              flexShrink: 0,
+            }}
+          >
+            {bookmarks.length}
+          </span>
+        </button>
+
+        {/* Delete group button — shows on hover, only for named groups */}
+        {!isUngrouped && (
+          <button
+            id={`delete-group-${label.replace(/\s+/g, '-').toLowerCase()}`}
+            onClick={() => onDeleteGroup(groupName, bookmarks.length)}
+            aria-label={`Delete group ${label}`}
+            className="btn-icon"
+            style={{
+              flexShrink: 0,
+              opacity: isGroupHovered ? 1 : 0,
+              transform: isGroupHovered ? 'scale(1)' : 'scale(0.8)',
+              transition: 'opacity 150ms ease, transform 150ms ease',
+              pointerEvents: isGroupHovered ? 'auto' : 'none',
+              color: 'var(--color-text-muted)',
+            }}
+            title="Delete entire group"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+            </svg>
+          </button>
+        )}
+      </div>
 
       {/* Cards */}
       <div
@@ -206,8 +220,8 @@ function GroupSection({ groupName, bookmarks, baseDelay, onDelete, defaultOpen =
           overflow: 'hidden',
           maxHeight: isOpen ? '9999px' : '0',
           transition: isOpen
-            ? 'max-height 350ms cubic-bezier(0.22, 0.61, 0.36, 1)'
-            : 'max-height 200ms cubic-bezier(0.55, 0, 1, 0.45)',
+            ? 'max-height 350ms var(--ease-out)'
+            : 'max-height 200ms var(--ease-in)',
         }}
       >
         {bookmarks.map((bookmark, idx) => (
@@ -215,6 +229,7 @@ function GroupSection({ groupName, bookmarks, baseDelay, onDelete, defaultOpen =
             key={bookmark.id}
             bookmark={bookmark}
             onDelete={onDelete}
+            onEdit={onEdit}
             animationDelay={baseDelay + idx * 40}
           />
         ))}
@@ -229,7 +244,9 @@ interface BookmarkListProps {
   bookmarks: Bookmark[]
   filteredBookmarks: Bookmark[]
   query: string
-  onDelete: (id: string) => void | Promise<void>
+  onDelete: (bookmark: Bookmark) => void
+  onEdit: (bookmark: Bookmark) => void
+  onDeleteGroup: (groupName: string, count: number) => void
   onAddClick: () => void
   onClearSearch: () => void
 }
@@ -239,6 +256,8 @@ export default function BookmarkList({
   filteredBookmarks,
   query,
   onDelete,
+  onEdit,
+  onDeleteGroup,
   onAddClick,
   onClearSearch,
 }: BookmarkListProps) {
@@ -255,23 +274,12 @@ export default function BookmarkList({
   }
 
   const grouped = groupBookmarks(filteredBookmarks)
-
-  // Running delay offset for staggered animations across groups
   let delayOffset = 0
 
   return (
     <section aria-label="Bookmarks list" style={{ paddingTop: '0.25rem', paddingBottom: '6rem' }}>
-      {/* Result count when filtering */}
       {isFiltering && (
-        <p
-          style={{
-            fontSize: '0.75rem',
-            color: 'var(--color-text-muted)',
-            fontFamily: 'var(--font-display)',
-            marginBottom: '0.875rem',
-            paddingLeft: '0.25rem',
-          }}
-        >
+        <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-display)', marginBottom: '0.875rem', paddingLeft: '0.25rem' }}>
           {filteredBookmarks.length} result{filteredBookmarks.length !== 1 ? 's' : ''}
           {' '}across {grouped.length} group{grouped.length !== 1 ? 's' : ''}
         </p>
@@ -287,6 +295,8 @@ export default function BookmarkList({
             bookmarks={items}
             baseDelay={sectionDelay}
             onDelete={onDelete}
+            onEdit={onEdit}
+            onDeleteGroup={onDeleteGroup}
             defaultOpen={true}
           />
         )

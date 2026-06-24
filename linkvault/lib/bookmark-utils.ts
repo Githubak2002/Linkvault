@@ -97,6 +97,40 @@ export async function deleteBookmark(id: string): Promise<void> {
   if (error) throw new Error(error.message)
 }
 
+/** Update an existing bookmark; returns the updated record */
+export async function updateBookmark(
+  id: string,
+  input: Partial<BookmarkInput>,
+): Promise<Bookmark> {
+  const supabase = createClient()
+
+  const updates: Record<string, string> = {}
+  if (input.name !== undefined) updates.name = input.name
+  if (input.url !== undefined) updates.url = input.url
+  if (input.description !== undefined) updates.description = input.description
+  if (input.group !== undefined) updates.group_name = input.group
+
+  const { data, error } = await supabase
+    .from('bookmarks')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return rowToBookmark(data as BookmarkRow)
+}
+
+/** Delete all bookmarks in a given group */
+export async function deleteBookmarksByGroup(groupName: string): Promise<void> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from('bookmarks')
+    .delete()
+    .eq('group_name', groupName)
+  if (error) throw new Error(error.message)
+}
+
 /**
  * Filter bookmarks client-side by query.
  * Matches name, description, url, and group (case-insensitive substring).

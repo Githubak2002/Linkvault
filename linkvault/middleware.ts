@@ -32,17 +32,20 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // If not logged in and not on /login → redirect to /login
-  if (!user && pathname !== '/login') {
+  // Public routes accessible without authentication
+  const isPublicRoute = pathname === '/' || pathname === '/login'
+
+  // If not logged in and not on a public route → redirect to /login
+  if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // If logged in and on /login → redirect to /
+  // If logged in and on /login → redirect to /dashboard
   if (user && pathname === '/login') {
     const url = request.nextUrl.clone()
-    url.pathname = '/'
+    url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 
@@ -51,13 +54,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico
-     * - public assets
-     */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
