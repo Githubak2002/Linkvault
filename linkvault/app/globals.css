@@ -1,0 +1,304 @@
+/* ============================================================
+   LinkVault — Design System
+   UI-UX-Pro-Max: Micro-interactions style
+   Fonts: JetBrains Mono (display) + IBM Plex Sans (body)
+   Palette: Deep navy (dark) / Warm white (light) · Teal · Orange
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ── Tailwind custom theme tokens ── */
+@theme inline {
+  --font-display: 'JetBrains Mono', 'Courier New', monospace;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+
+  /* Brand (theme-independent) */
+  --color-primary:       #0D9488;
+  --color-primary-light: #14B8A6;
+  --color-primary-dim:   #0F766E;
+  --color-cta:           #F97316;
+  --color-cta-hover:     #EA6C0A;
+  --color-success:       #22C55E;
+  --color-error:         #EF4444;
+
+  /* Micro-interaction timings */
+  --duration-micro:  60ms;
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   400ms;
+}
+
+/* ══════════════════════════════════════════════════
+   DARK THEME (default — attr: [data-theme="dark"])
+   ══════════════════════════════════════════════════ */
+:root,
+[data-theme="dark"] {
+  --color-bg:             #080D17;
+  --color-surface:        #0F1623;
+  --color-surface-2:      #161D2E;
+  --color-surface-3:      #1E2740;
+  --color-overlay:        rgba(8, 13, 23, 0.88);
+
+  --color-text-primary:   #F0F4FF;
+  --color-text-secondary: #8B9BBE;
+  --color-text-muted:     #4E5E7A;
+  --color-text-teal:      #2DD4BF;
+
+  --color-border:         #1E2740;
+  --color-border-focus:   #0D9488;
+
+  --color-scrollbar-thumb: #1E2740;
+}
+
+/* ══════════════════════════════════════════════════
+   LIGHT THEME (attr: [data-theme="light"])
+   ══════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --color-bg:             #F5F7FF;
+  --color-surface:        #FFFFFF;
+  --color-surface-2:      #EEF2FF;
+  --color-surface-3:      #E0E7FF;
+  --color-overlay:        rgba(30, 40, 80, 0.55);
+
+  --color-text-primary:   #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted:     #94A3B8;
+  --color-text-teal:      #0D9488;
+
+  --color-border:         #D1D5DB;
+  --color-border-focus:   #0D9488;
+
+  --color-scrollbar-thumb: #CBD5E1;
+}
+
+/* ── Base reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* smooth background/color transitions on theme toggle */
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* ── Typography utilities ── */
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary-dim); }
+
+/* ── Focus ring ── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ── Keyframe animations ── */
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes card-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+    max-height: 300px;
+    margin-bottom: 0.75rem;
+    padding: inherit;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-60px) scaleY(0.8);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+@keyframes sheet-enter {
+  from { transform: translateX(100%); opacity: 0.3; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes sheet-exit {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes overlay-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes overlay-exit {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Animation utility classes ── */
+.animate-card-enter {
+  animation: card-enter var(--duration-slow) cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.animate-card-exit {
+  animation: card-exit var(--duration-normal) cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  overflow: hidden;
+}
+.animate-sheet-enter {
+  animation: sheet-enter var(--duration-slow) cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.animate-sheet-exit {
+  animation: sheet-exit var(--duration-normal) cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+.animate-overlay-enter { animation: overlay-enter var(--duration-fast) ease both; }
+.animate-overlay-exit  { animation: overlay-exit  var(--duration-fast) ease forwards; }
+.animate-float         { animation: float 3s ease-in-out infinite; }
+.animate-fade-up       { animation: fade-up var(--duration-slow) cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Glass card surface ── */
+.glass-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  transition: background-color 200ms ease,
+              border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease;
+}
+
+.glass-card:hover {
+  border-color: var(--color-primary-dim);
+  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.15),
+              0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .glass-card:hover {
+  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.2),
+              0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Input styles ── */
+.input-field {
+  width: 100%;
+  background: var(--color-surface-2);
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.625rem 0.875rem;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  transition: border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease,
+              background-color 200ms ease;
+  outline: none;
+}
+
+.input-field::placeholder { color: var(--color-text-muted); }
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--duration-micro) ease,
+              box-shadow var(--duration-micro) ease,
+              transform var(--duration-micro) ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--color-cta);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--color-cta-hover);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1.5px solid var(--color-border);
+}
+.btn-ghost:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
+  border-color: var(--color-surface-3);
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--duration-micro) ease,
+              color var(--duration-micro) ease;
+}
+.btn-icon:hover {
+  background: var(--color-surface-3);
+  color: var(--color-error);
+}

@@ -1,0 +1,68 @@
+import { Bookmark } from '@/types/bookmark'
+
+export const dummyBookmarks: Bookmark[] = [
+  {
+    id: '1',
+    name: 'Vercel',
+    url: 'https://vercel.com',
+    description: 'Deploy Next.js and frontend projects instantly. Zero-config CI/CD with preview deployments on every push.',
+    group: 'Dev Tools',
+    createdAt: new Date('2024-01-15'),
+  },
+  {
+    id: '2',
+    name: 'Tailwind CSS Docs',
+    url: 'https://tailwindcss.com/docs',
+    description: 'Official Tailwind CSS documentation. Utility-first CSS framework for rapid UI development with responsive and dark mode support.',
+    group: 'Docs',
+    createdAt: new Date('2024-01-20'),
+  },
+  {
+    id: '3',
+    name: 'Figma',
+    url: 'https://figma.com',
+    description: 'Collaborative UI/UX design tool. Create prototypes, wireframes, and full design systems with real-time team collaboration.',
+    group: 'Design',
+    createdAt: new Date('2024-02-01'),
+  },
+  {
+    id: '4',
+    name: 'Linear',
+    url: 'https://linear.app',
+    description: 'Issue tracking and project management for modern software teams. Keyboard-first, fast, and beautifully designed.',
+    group: 'Productivity',
+    createdAt: new Date('2024-02-10'),
+  },
+  {
+    id: '5',
+    name: 'TypeScript Handbook',
+    url: 'https://www.typescriptlang.org/docs/handbook/intro.html',
+    description: 'The definitive guide to TypeScript. Covers types, interfaces, generics, utility types, and advanced patterns.',
+    group: 'Docs',
+    createdAt: new Date('2024-02-15'),
+  },
+  {
+    id: '6',
+    name: 'Raycast',
+    url: 'https://raycast.com',
+    description: 'Supercharged productivity app for macOS. Launcher, scripts, clipboard history, window management, and AI assistant.',
+    group: 'Productivity',
+    createdAt: new Date('2024-03-01'),
+  },
+  {
+    id: '7',
+    name: 'Lucide Icons',
+    url: 'https://lucide.dev',
+    description: 'Beautiful, consistent open-source icon library. 1500+ icons as React components, SVG, or web font. Stroke-based and highly scalable.',
+    group: 'Design',
+    createdAt: new Date('2024-03-05'),
+  },
+  {
+    id: '8',
+    name: 'Supabase',
+    url: 'https://supabase.com',
+    description: 'Open-source Firebase alternative. Postgres database, authentication, real-time subscriptions, edge functions, and storage.',
+    group: 'Dev Tools',
+    createdAt: new Date('2024-03-10'),
+  },
+]
