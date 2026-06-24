@@ -73,7 +73,7 @@ export default function Header({ onAddClick, userEmail }: HeaderProps) {
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-2">
           {/* Theme toggle */}
           <button
             id="theme-toggle-btn"

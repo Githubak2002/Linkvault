@@ -14,6 +14,7 @@ import Header from '@/components/Header'
 import SearchBar from '@/components/SearchBar'
 import BookmarkList from '@/components/BookmarkList'
 import AddBookmarkSheet from '@/components/AddBookmarkSheet'
+import BottomNav from '@/components/BottomNav'
 
 export default function Home() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
@@ -126,6 +127,8 @@ export default function Home() {
           />
         )}
       </div>
+
+      <BottomNav onAddClick={handleOpenSheet} userEmail={userEmail} />
 
       <AddBookmarkSheet
         isOpen={isSheetOpen}

@@ -7,8 +7,8 @@
 ---
 
 **Project:** LinkVault
-**Generated:** 2026-06-24 15:50:14
-**Category:** Productivity Tool
+**Generated:** 2026-06-24 18:47:56
+**Category:** Developer Tool / IDE
 
 ---
 
@@ -18,13 +18,13 @@
 
 | Role | Hex | CSS Variable |
 |------|-----|--------------|
-| Primary | `#0D9488` | `--color-primary` |
-| Secondary | `#14B8A6` | `--color-secondary` |
-| CTA/Accent | `#F97316` | `--color-cta` |
-| Background | `#F0FDFA` | `--color-background` |
-| Text | `#134E4A` | `--color-text` |
+| Primary | `#1E293B` | `--color-primary` |
+| Secondary | `#334155` | `--color-secondary` |
+| CTA/Accent | `#22C55E` | `--color-cta` |
+| Background | `#0F172A` | `--color-background` |
+| Text | `#F8FAFC` | `--color-text` |
 
-**Color Notes:** Teal focus + action orange
+**Color Notes:** Code dark + run green
 
 ### Typography
 
@@ -68,7 +68,7 @@
 ```css
 /* Primary Button */
 .btn-primary {
-  background: #F97316;
+  background: #22C55E;
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
@@ -85,8 +85,8 @@
 /* Secondary Button */
 .btn-secondary {
   background: transparent;
-  color: #0D9488;
-  border: 2px solid #0D9488;
+  color: #1E293B;
+  border: 2px solid #1E293B;
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
@@ -99,7 +99,7 @@
 
 ```css
 .card {
-  background: #F0FDFA;
+  background: #0F172A;
   border-radius: 12px;
   padding: 24px;
   box-shadow: var(--shadow-md);
@@ -125,9 +125,9 @@
 }
 
 .input:focus {
-  border-color: #0D9488;
+  border-color: #1E293B;
   outline: none;
-  box-shadow: 0 0 0 3px #0D948820;
+  box-shadow: 0 0 0 3px #1E293B20;
 }
 ```
 
@@ -153,28 +153,28 @@
 
 ## Style Guidelines
 
-**Style:** Micro-interactions
+**Style:** Vibrant & Block-based
 
-**Keywords:** Small animations, gesture-based, tactile feedback, subtle animations, contextual interactions, responsive
+**Keywords:** Bold, energetic, playful, block layout, geometric shapes, high color contrast, duotone, modern, energetic
 
-**Best For:** Mobile apps, touchscreen UIs, productivity tools, user-friendly, consumer apps, interactive components
+**Best For:** Startups, creative agencies, gaming, social media, youth-focused, entertainment, consumer
 
-**Key Effects:** Small hover (50-100ms), loading spinners, success/error state anim, gesture-triggered (swipe/pinch), haptic
+**Key Effects:** Large sections (48px+ gaps), animated patterns, bold hover (color shift), scroll-snap, large type (32px+), 200-300ms
 
 ### Page Pattern
 
-**Pattern Name:** Minimal Single Column
+**Pattern Name:** App Store Style Landing
 
-- **Conversion Strategy:** Single CTA focus. Large typography. Lots of whitespace. No nav clutter. Mobile-first.
-- **CTA Placement:** Center, large CTA button
-- **Section Order:** 1. Hero headline, 2. Short description, 3. Benefit bullets (3 max), 4. CTA, 5. Footer
+- **Conversion Strategy:** Show real screenshots. Include ratings (4.5+ stars). QR code for mobile. Platform-specific CTAs.
+- **CTA Placement:** Download buttons prominent (App Store + Play Store) throughout
+- **Section Order:** 1. Hero with device mockup, 2. Screenshots carousel, 3. Features with icons, 4. Reviews/ratings, 5. Download CTAs
 
 ---
 
 ## Anti-Patterns (Do NOT Use)
 
-- ❌ Complex onboarding
-- ❌ Slow performance
+- ❌ Flat design without depth
+- ❌ Text-heavy pages
 
 ### Additional Forbidden Patterns
 

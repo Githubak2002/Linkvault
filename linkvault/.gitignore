@@ -4,6 +4,9 @@
 /linkvault/.env.local
 /linkvault/.env
 
+# tmp
+/tmp
+
 # dependencies
 /node_modules
 /.pnp
