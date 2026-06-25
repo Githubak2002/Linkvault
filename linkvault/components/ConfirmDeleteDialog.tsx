@@ -1,15 +1,12 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 export interface ConfirmDeleteConfig {
-  /** What are we deleting? e.g. "bookmark" or "group" */
   type: 'bookmark' | 'group'
-  /** The exact name the user must type to confirm */
   confirmText: string
-  /** Display label for what's being deleted */
   label: string
-  /** Count of items (for groups) */
   count?: number
 }
 
@@ -26,9 +23,14 @@ export default function ConfirmDeleteDialog({
 }: ConfirmDeleteDialogProps) {
   const [input, setInput] = useState('')
   const [isClosing, setIsClosing] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const isMatch = input.trim() === config?.confirmText
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (config) {
@@ -38,7 +40,6 @@ export default function ConfirmDeleteDialog({
     }
   }, [config])
 
-  // Close on Escape
   useEffect(() => {
     if (!config) return
     const handler = (e: KeyboardEvent) => {
@@ -67,39 +68,48 @@ export default function ConfirmDeleteDialog({
   }, [isMatch, onConfirm])
 
   if (!config && !isClosing) return null
+  if (!mounted) return null
 
   const isGroup = config?.type === 'group'
 
-  return (
-    <>
-      {/* Backdrop */}
+  const modalContent = (
+    /* Flexbox Wrapper for bulletproof centering */
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 60,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem', // Ensures it never touches the screen edges on tiny mobile screens
+      }}
+    >
+      {/* Backdrop (Positioned absolute to fill the flex wrapper) */}
       <div
         onClick={handleCancel}
         className={isClosing ? 'animate-overlay-exit' : 'animate-overlay-enter'}
         style={{
-          position: 'fixed',
+          position: 'absolute',
           inset: 0,
-          zIndex: 60,
           backgroundColor: 'var(--color-overlay)',
           backdropFilter: 'blur(6px)',
           WebkitBackdropFilter: 'blur(6px)',
         }}
       />
 
-      {/* Dialog */}
+      {/* Dialog (Positioned relative to sit inside the flex container) */}
       <div
         role="alertdialog"
         aria-modal="true"
         aria-label={`Confirm delete ${config?.label}`}
         className={isClosing ? 'animate-overlay-exit' : 'animate-fade-up'}
         style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: 'relative', // Removed fixed positioning, top, left, and transform
           zIndex: 61,
-          width: '92%',
-          maxWidth: '400px',
+          width: '100%', // Takes full width of the padded flex container...
+          maxWidth: '400px', // ...but stops at 400px
+          boxSizing: 'border-box',
           backgroundColor: 'var(--color-surface-solid)',
           border: '1px solid var(--color-border)',
           borderRadius: '20px',
@@ -223,6 +233,8 @@ export default function ConfirmDeleteDialog({
           </button>
         </div>
       </div>
-    </>
+    </div>
   )
+
+  return createPortal(modalContent, document.body)
 }

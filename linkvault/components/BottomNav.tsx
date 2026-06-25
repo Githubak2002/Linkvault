@@ -27,7 +27,7 @@ export default function BottomNav({ onAddClick, userEmail }: BottomNavProps) {
   }
 
   return (
-    <nav className="bottom-nav sm:hidden">
+      <nav className="bottom-nav sm:hidden fixed bottom-0 left-0 w-full z-50 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-md border-t border-black/10 dark:border-white/10 pb-safe">
       {/* Home */}
       <button className="nav-item" onClick={scrollToTop} aria-label="Home">
         <svg className="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
