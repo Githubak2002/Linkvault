@@ -177,7 +177,7 @@ function GroupSection({ groupName, bookmarks, baseDelay, onDelete, onEdit, onDel
           <span
             style={{
               fontSize: '0.6875rem', fontFamily: 'var(--font-display)', fontWeight: 600,
-              padding: '0.125rem 0.5rem', borderRadius: '99px',
+              padding: '0.125rem 0.5rem', borderRadius: '5px',
               backgroundColor: isUngrouped ? 'var(--color-surface-2)' : 'var(--color-primary-glow)',
               color: isUngrouped ? 'var(--color-text-muted)' : 'var(--color-primary)',
               border: `1px solid ${isUngrouped ? 'var(--color-border)' : 'rgba(99,102,241,0.2)'}`,
@@ -196,11 +196,11 @@ function GroupSection({ groupName, bookmarks, baseDelay, onDelete, onEdit, onDel
             aria-label={`Delete group ${label}`}
             className="btn-icon"
             style={{
-              flexShrink: 0,
-              opacity: isGroupHovered ? 1 : 0,
-              transform: isGroupHovered ? 'scale(1)' : 'scale(0.8)',
-              transition: 'opacity 150ms ease, transform 150ms ease',
-              pointerEvents: isGroupHovered ? 'auto' : 'none',
+              // flexShrink: 0,
+              // opacity: isGroupHovered ? 1 : 0,
+              // transform: isGroupHovered ? 'scale(1)' : 'scale(0.8)',
+              // transition: 'opacity 150ms ease, transform 150ms ease',
+              // pointerEvents: isGroupHovered ? 'auto' : 'none',
               color: 'var(--color-text-muted)',
             }}
             title="Delete entire group"
