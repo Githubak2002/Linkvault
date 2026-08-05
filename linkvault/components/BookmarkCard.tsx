@@ -52,6 +52,8 @@ export default function BookmarkCard({
   animationDelay = 0,
 }: BookmarkCardProps) {
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+
 
   const initial = getHostInitial(bookmark.url)
   const host = getDisplayHost(bookmark.url)
@@ -84,6 +86,8 @@ export default function BookmarkCard({
         position: 'relative',
         cursor: 'default',
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       aria-label={`Bookmark: ${bookmark.name}`}
     >
       <div className="flex flex-col gap-2.5">
@@ -163,11 +167,15 @@ export default function BookmarkCard({
             </a>
           </div>
 
-          {/* Action buttons — always visible */}
+          {/* Action buttons → Delete & Edit — reveal on hover (or always visible on touch) */}
           <div
             className="flex items-center gap-1"
             style={{
               flexShrink: 0,
+              opacity: isHovered ? 1 : 0,
+              transform: isHovered ? 'scale(1)' : 'scale(0.8)',
+              transition: 'opacity 150ms ease, transform 150ms ease',
+              pointerEvents: isHovered ? 'auto' : 'none',
             }}
           >
             {/* Edit */}

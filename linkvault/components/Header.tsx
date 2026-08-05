@@ -87,6 +87,7 @@ export default function Header({ onAddClick, userEmail }: HeaderProps) {
             height: '32px',
           }}
         >
+        {/* <> */}
           <svg
             width="16"
             height="16"
@@ -98,8 +99,8 @@ export default function Header({ onAddClick, userEmail }: HeaderProps) {
             strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
           </svg>
         </a>
 

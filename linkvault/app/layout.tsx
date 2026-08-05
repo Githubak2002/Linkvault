@@ -4,7 +4,7 @@ import { ThemeProvider } from '@/lib/theme-context'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'LinkVault — Personal Bookmark Manager',
+  title: 'Ak LinkVault - Personal Bookmark Manager',
   description:
     'Save, browse, and search your personal web bookmarks. A fast, focused, premium-quality link vault built for developers.',
   keywords: ['bookmarks', 'links', 'productivity', 'personal', 'web', 'developer tools'],
