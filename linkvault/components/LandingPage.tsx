@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useTheme } from '@/lib/theme-context'
+import Footer from '@/components/Footer'
 
 export default function LandingPage() {
   const { theme, toggleTheme } = useTheme()
@@ -631,22 +632,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Footer ── */}
-      <footer
-        style={{
-          padding: '2rem 1.5rem',
-          textAlign: 'center',
-          borderTop: '1px solid var(--color-border)',
-        }}
-      >
-        <p
-          style={{
-            fontSize: '0.8125rem',
-            color: 'var(--color-text-muted)',
-          }}
-        >
-          Built with ❤ by LinkVault
-        </p>
-      </footer>
+      <Footer />
     </main>
   )
 }

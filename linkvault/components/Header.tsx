@@ -3,6 +3,7 @@
 import { useTheme } from '@/lib/theme-context'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useCallback } from 'react'
 
 interface HeaderProps {
@@ -34,7 +35,7 @@ export default function Header({ onAddClick, userEmail }: HeaderProps) {
     >
       <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-4">
         {/* Logo / App name */}
-        <div className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5" style={{ textDecoration: 'none' }}>
           {/* Vault icon */}
           <div
             style={{
@@ -70,7 +71,37 @@ export default function Header({ onAddClick, userEmail }: HeaderProps) {
           >
             Link<span style={{ color: 'var(--color-primary-light)' }}>Vault</span>
           </span>
-        </div>
+        </Link>
+
+        {/* Portfolio link — next to logo, all screen sizes */}
+        <a
+          href="https://dev-anurag.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="My Portfolio"
+          aria-label="My Portfolio"
+          className="btn-icon"
+          style={{
+            color: 'var(--color-text-muted)',
+            width: '32px',
+            height: '32px',
+          }}
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </a>
 
         {/* Right actions */}
         <div className="hidden sm:flex items-center gap-2">

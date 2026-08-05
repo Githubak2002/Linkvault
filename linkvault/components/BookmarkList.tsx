@@ -189,7 +189,7 @@ function GroupSection({ groupName, bookmarks, baseDelay, onDelete, onEdit, onDel
         </button>
 
         {/* Delete group button — shows on hover, only for named groups */}
-        {!isUngrouped && (
+        {/* {!isUngrouped && ( */}
           <button
             id={`delete-group-${label.replace(/\s+/g, '-').toLowerCase()}`}
             onClick={() => onDeleteGroup(groupName, bookmarks.length)}
@@ -210,7 +210,7 @@ function GroupSection({ groupName, bookmarks, baseDelay, onDelete, onEdit, onDel
               <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
             </svg>
           </button>
-        )}
+        {/* )} */}
       </div>
 
       {/* Cards */}

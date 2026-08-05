@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useTheme } from '@/lib/theme-context'
+import Footer from '@/components/Footer'
 
 type AuthMode = 'login' | 'signup'
 
@@ -117,12 +119,14 @@ export default function LoginPage() {
         }}
       >
         {/* Logo */}
-        <div
+        <Link
+          href="/"
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             marginBottom: '2rem',
+            textDecoration: 'none',
           }}
         >
           <div
@@ -174,7 +178,7 @@ export default function LoginPage() {
           >
             {mode === 'login' ? 'Welcome back' : 'Create your vault'}
           </p>
-        </div>
+        </Link>
 
         {/* Form card */}
         <div
@@ -280,7 +284,7 @@ export default function LoginPage() {
                     id="auth-password"
                     type={showPassword ? 'text' : 'password'}
                     className="input-field"
-                    placeholder={mode === 'signup' ? 'Min. 8 characters' : '••••••••'}
+                    placeholder={mode === 'signup' ? 'Min. 8 characters' : '12345678'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -427,6 +431,10 @@ export default function LoginPage() {
         >
           Your bookmarks are private and secure.
         </p>
+      </div>
+
+      <div style={{ marginTop: 'auto', width: '100%', marginInline: '-1.5rem', marginBottom: '-1.5rem' }}>
+        <Footer />
       </div>
     </main>
   )

@@ -15,16 +15,16 @@ export default function BottomNav({ onAddClick, userEmail }: BottomNavProps) {
   const router = useRouter()
   const isDark = theme === 'dark'
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const handleSignOut = useCallback(async () => {
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/login')
     router.refresh()
   }, [router])
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   return (
       <nav className="bottom-nav sm:hidden fixed bottom-0 left-0 w-full z-50 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-md border-t border-black/10 dark:border-white/10 pb-safe">
